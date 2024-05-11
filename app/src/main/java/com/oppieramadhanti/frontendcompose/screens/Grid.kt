@@ -2,6 +2,7 @@ package com.oppieramadhanti.frontendcompose.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,13 +24,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.oppieramadhanti.frontendcompose.data.DataProvider
 import com.oppieramadhanti.frontendcompose.data.model.Player
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun GridScreen() {
+fun GridScreen(navController: NavController) {
     val players = remember {
         DataProvider.playerList
     }
@@ -49,7 +51,9 @@ fun GridScreen() {
             modifier = Modifier.padding(innerPadding)
         ) {
             items(players.size, itemContent = {
-                PlayerImage(player = players[it])
+                PlayerImage(player = players[it]) {
+                    navController.navigate("playerDetail/${players[it].id}")
+                }
             })
         }
 
@@ -58,8 +62,8 @@ fun GridScreen() {
 
 
 @Composable
-private fun PlayerImage(player: Player) {
-    Column {
+private fun PlayerImage(player: Player, onItemClick: () -> Unit) {
+    Column(modifier = Modifier.clickable(onClick = onItemClick)) {
         Image(
             painter = painterResource(id = player.playerImage),
             contentDescription = player.name,
@@ -72,10 +76,4 @@ private fun PlayerImage(player: Player) {
         Text(text = player.name)
     }
 
-}
-
-@Preview
-@Composable
-fun PreviewGridScreen() {
-    GridScreen()
 }

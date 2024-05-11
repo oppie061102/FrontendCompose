@@ -16,23 +16,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+
 import com.oppieramadhanti.frontendcompose.data.model.Player
 
 @Composable
-fun PlayerListItem(player: Player) {
+fun PlayerListItem(player: Player, onItemClick: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable(onClick = onItemClick), // Navigate to detail screen on click
         shape = RoundedCornerShape(corner = CornerSize(16.dp))
     ) {
-        Row(Modifier.clickable {
-
-        }) {
-
+        Row {
             PlayerImage(player)
             Column(
                 modifier = Modifier

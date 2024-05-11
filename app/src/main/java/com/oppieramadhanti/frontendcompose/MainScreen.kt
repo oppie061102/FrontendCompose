@@ -69,18 +69,18 @@ fun MainScreen() {
             startDestination = Navigation.List.name,
             modifier = Modifier.padding(paddingValues)
         ) {
-            composable(route = Navigation.List.name, content = { ListScreen() })
-            composable(route = Navigation.Grid.name, content = { GridScreen() })
+            composable(route = Navigation.List.name, content = { ListScreen(navController) })
+            composable(route = Navigation.Grid.name, content = { GridScreen(navController) })
             composable(route = Navigation.About.name, content = { AboutScreen() })
             composable(
                 route = "playerDetail/{playerId}",
-                arguments = listOf(navArgument("playerId") { type = NavType.IntType })
+                arguments = listOf(navArgument("playerId") { type = NavType.IntType }) // Define player ID argument
             ) { backStackEntry ->
-                val playerId = backStackEntry.arguments?.getInt("playerId")
+                val playerId = backStackEntry.arguments?.getInt("playerId") //moving to detail screen with passing data from previous screen
                 val player = playerId?.let { id ->
                     DataProvider.playerList.find { it.id == id }
                 }
-                player?.let { DetailScreen(player = it) }
+                player?.let { DetailScreen(player = it, navController = navController) }
             }
         }
     }
